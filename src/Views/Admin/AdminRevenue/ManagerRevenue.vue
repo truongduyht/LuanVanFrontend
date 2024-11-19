@@ -1,9 +1,10 @@
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, toRaw } from "vue";
 import Service from "../../../Services/API";
 import moment from "moment";
 
 import PieChart from "@/Views/Auth/Chart/PieChart.vue";
+import BarChart from "@/Views/Auth/Chart/BarChart.vue";
 
 // Các trạng thái của tab
 const tabType = ref("all"); // "all", "day", "month"
@@ -13,11 +14,14 @@ const BookingDate = ref(null);
 const selectedMonth = ref(null);
 const selectedYear = ref(null);
 // Biến lưu doanh thu
+const revenueByFieldPie = ref(0);
 const totalRevenueByDate = ref(0);
 const totalRevenue = ref(0); // Tổng doanh thu
 const revenueByDateAndField = ref(0); // Doanh thu theo ngày
+const revenueByDateAndFieldPie = ref(0);
 const totalRevenueByMonth = ref(0); // Doanh thu theo tháng
 const revenueByMonthAndField = ref(0);
+const revenueByMonthAndFieldBar = ref(0);
 const revenueByField = ref(0); // Tổng doanh thu theo từng sân
 const resetData = () => {
   BookingDate.value = null;
@@ -44,16 +48,28 @@ const fetchTotalRevenue = async () => {
 const fetchRevenueByField = async () => {
   try {
     const response = await Service.getRevenueByField();
-    console.log("Response from API:", response); // In phản hồi để kiểm tra // API lấy tổng doanh thu
     if (response && response.data.EC === 0) {
+      // Chuẩn bị dữ liệu dưới dạng mảng hợp lệ
       revenueByField.value = response.data.DT;
+      revenueByFieldPie.value = toRaw(
+        response.data.DT.map((field) => ({
+          label: field.fieldInfo[0]?.FieldName || "Không xác định",
+          value: field.revenueByField,
+        }))
+      );
+      console.log("revenueByField", revenueByField.value);
+
+      console.log("revenueByFieldPie", revenueByFieldPie.value);
     } else {
       console.error("Failed to fetch total revenue:", response.data.EM);
+      revenueByField.value = []; // Trường hợp lỗi, đảm bảo revenueByField là mảng rỗng
     }
   } catch (error) {
     console.error("Error fetching total revenue:", error);
+    revenueByField.value = []; // Trường hợp lỗi, đảm bảo revenueByField là mảng rỗng
   }
 };
+
 console.log("Data", revenueByField);
 
 // Hàm gọi API để lấy doanh thu theo ngày
@@ -84,7 +100,14 @@ const fetchRevenueByDateAndField = async () => {
     console.log("Response from API:", response); // In phản hồi để kiểm tra // API lấy tổng doanh thu
     if (response && response.data.EC === 0) {
       revenueByDateAndField.value = response.data.DT;
+      revenueByDateAndFieldPie.value = toRaw(
+        response.data.DT.map((field) => ({
+          label: field.fieldInfo[0]?.FieldName || "Không xác định",
+          value: field.revenueByDateAndField,
+        }))
+      );
       console.log("ByDate", revenueByDateAndField.value);
+      console.log("revenueByDateAndFieldPie", revenueByDateAndFieldPie.value);
     } else {
       console.error("Failed to fetch total revenue:", response.data.EM);
     }
@@ -116,9 +139,14 @@ const fetchRevenueByMonthAndField = async () => {
     console.log("Response from API:", response); // In phản hồi để kiểm tra // API lấy tổng doanh thu
     if (response && response.data.EC === 0) {
       revenueByMonthAndField.value = response.data.DT;
-      console.log("ByDate", revenueByMonthAndField.value);
-    } else {
-      console.error("Failed to fetch total revenue:", response.data.EM);
+      revenueByMonthAndFieldBar.value = toRaw(
+        response.data.DT.map((field) => ({
+          label: field.fieldInfo[0]?.FieldName || "Không xác định",
+          value: field.revenueByMonthAndField,
+        }))
+      );
+      console.log("revenueByMonthAndField", revenueByMonthAndField.value);
+      console.log("revenueByMonthAndFieldBar", revenueByMonthAndFieldBar.value);
     }
   } catch (error) {
     console.error("Error fetching total revenue:", error);
@@ -198,7 +226,10 @@ onMounted(() => {
         </table>
         <h5 class="section-subtitle">Biểu đồ doanh thu theo từng sân:</h5>
         <div class="chart-container">
-          <PieChart :revenueData="revenueByField" />
+          <PieChart
+            :revenueData="revenueByFieldPie"
+            v-if="revenueByFieldPie.length > 0"
+          />
         </div>
       </div>
     </div>
@@ -242,6 +273,13 @@ onMounted(() => {
               </tr>
             </tbody>
           </table>
+          <h5 class="section-subtitle">Biểu đồ doanh thu theo từng sân:</h5>
+          <div class="chart-container">
+            <PieChart
+              :revenueData="revenueByDateAndFieldPie"
+              v-if="revenueByDateAndFieldPie.length > 0"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -283,6 +321,13 @@ onMounted(() => {
               </tr>
             </tbody>
           </table>
+          <h5 class="section-subtitle">Biểu đồ doanh thu theo từng sân:</h5>
+          <div class="chart-container">
+            <BarChart
+              :revenueData="revenueByMonthAndFieldBar"
+              v-if="revenueByMonthAndFieldBar.length > 0"
+            />
+          </div>
         </div>
       </div>
     </div>
