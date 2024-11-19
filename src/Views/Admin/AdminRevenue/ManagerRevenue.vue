@@ -3,6 +3,8 @@ import { computed, onMounted, ref, watch } from "vue";
 import Service from "../../../Services/API";
 import moment from "moment";
 
+import PieChart from "@/Views/Auth/Chart/PieChart.vue";
+
 // Các trạng thái của tab
 const tabType = ref("all"); // "all", "day", "month"
 
@@ -52,6 +54,7 @@ const fetchRevenueByField = async () => {
     console.error("Error fetching total revenue:", error);
   }
 };
+console.log("Data", revenueByField);
 
 // Hàm gọi API để lấy doanh thu theo ngày
 const fetchRevenueByDate = async () => {
@@ -174,6 +177,7 @@ onMounted(() => {
         Tổng doanh thu:
         <b class="text-success">{{ totalRevenue.toLocaleString() }} VNĐ</b>
       </h5>
+      <!-- Biểu đồ doanh thu theo từng sân -->
 
       <!-- Bảng doanh thu theo từng sân -->
       <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
@@ -192,6 +196,10 @@ onMounted(() => {
             </tr>
           </tbody>
         </table>
+        <h5 class="section-subtitle">Biểu đồ doanh thu theo từng sân:</h5>
+        <div class="chart-container">
+          <PieChart :revenueData="revenueByField" />
+        </div>
       </div>
     </div>
 
@@ -282,6 +290,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 400px;
+  margin: 0 auto;
+}
 /* Container tổng của phần quản lý doanh thu */
 .revenue-management-container {
   max-width: 1200px;
