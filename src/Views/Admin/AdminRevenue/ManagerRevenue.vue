@@ -2,6 +2,7 @@
 import { computed, onMounted, ref, watch, toRaw } from "vue";
 import Service from "../../../Services/API";
 import moment from "moment";
+import * as XLSX from "xlsx";
 
 import PieChart from "@/Views/Auth/Chart/PieChart.vue";
 import BarChart from "@/Views/Auth/Chart/BarChart.vue";
@@ -181,7 +182,58 @@ const handleMonthChange = (event) => {
     selectedMonth.value = null;
   }
 };
+// Hàm xuất doanh thu ra Excel
+const exportRevenueToExcel = () => {
+  // Dữ liệu xuất ra (ví dụ: doanh thu theo từng sân)
+  const data = revenueByField.value.map((field) => ({
+    Sân: field.fieldInfo[0]?.FieldName || "Không xác định",
+    "Tổng Doanh thu (VNĐ)": field.revenueByField.toLocaleString(),
+  }));
 
+  // Tạo worksheet từ dữ liệu
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  // Tạo workbook từ worksheet
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Doanh thu");
+
+  // Xuất file Excel
+  XLSX.writeFile(wb, "TongDoanhThu.xlsx");
+};
+const exportRevenueDateToExcel = () => {
+  // Dữ liệu xuất ra (ví dụ: doanh thu theo từng sân)
+  const data = revenueByDateAndField.value.map((field) => ({
+    Sân: field.fieldInfo[0]?.FieldName || "Không xác định",
+    "Doanh thu theo ngày (VNĐ)": field.revenueByDateAndField.toLocaleString(),
+  }));
+
+  // Tạo worksheet từ dữ liệu
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  // Tạo workbook từ worksheet
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Doanh thu");
+
+  // Xuất file Excel
+  XLSX.writeFile(wb, "DoanhThuNgay.xlsx");
+};
+const exportRevenueMonthToExcel = () => {
+  // Dữ liệu xuất ra (ví dụ: doanh thu theo từng sân)
+  const data = revenueByMonthAndField.value.map((field) => ({
+    Sân: field.fieldInfo[0]?.FieldName || "Không xác định",
+    "Doanh thu theo tháng (VNĐ)": field.revenueByMonthAndField.toLocaleString(),
+  }));
+
+  // Tạo worksheet từ dữ liệu
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  // Tạo workbook từ worksheet
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Doanh thu");
+
+  // Xuất file Excel
+  XLSX.writeFile(wb, "DoanhThuThang.xlsx");
+};
 // Gọi API khi component được mount
 onMounted(() => {
   fetchTotalRevenue();
@@ -209,6 +261,9 @@ onMounted(() => {
 
       <!-- Bảng doanh thu theo từng sân -->
       <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
+      <button @click="exportRevenueToExcel" class="btn btn-primary">
+        Xuất Excel
+      </button>
       <div class="table-container">
         <table class="custom-table">
           <thead>
@@ -255,6 +310,9 @@ onMounted(() => {
           >
         </h5>
         <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
+        <button @click="exportRevenueDateToExcel" class="btn btn-primary">
+          Xuất Excel
+        </button>
         <div class="table-container">
           <table class="custom-table">
             <thead>
@@ -303,6 +361,9 @@ onMounted(() => {
           >
         </h5>
         <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
+        <button @click="exportRevenueMonthToExcel" class="btn btn-primary">
+          Xuất Excel
+        </button>
         <div class="table-container">
           <table class="custom-table">
             <thead>
