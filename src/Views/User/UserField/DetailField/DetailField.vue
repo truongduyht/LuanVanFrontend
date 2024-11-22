@@ -227,7 +227,7 @@ const handlePayment = async () => {
                       (review) => review.Status === 'good'
                     )"
                     :key="index"
-                    class="review-item mb-3"
+                    class="review-item"
                   >
                     <span class="username">{{ review.UserID?.UserName }}:</span>
                     <span class="comment-text">{{ review.Comment }}</span>
@@ -395,9 +395,8 @@ const handlePayment = async () => {
   align-items: baseline;
   font-size: 16px;
   background-color: #f7f7f7; /* Nền mặc định cho mỗi bình luận */
-  padding: 10px;
+  padding: 7px;
   border-radius: 8px; /* Bo góc nền */
-  margin-bottom: 10px; /* Khoảng cách giữa các bình luận */
   transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển màu và bóng đổ khi hover */
 }
 
