@@ -167,7 +167,7 @@ const handlePayment = async () => {
       message.error(response.data.EM || "Đặt sân thất bại!");
     }
   } catch (error) {
-    message.error("Đã xảy ra lỗi vui lòng thử lại");
+    message.error("Sân đã được đặt trong khoản thời gian này");
     console.error(error); // Log chi tiết lỗi để dễ dàng gỡ lỗi
   } finally {
     loading.value = false; // Kết thúc loading
@@ -308,7 +308,7 @@ const handlePayment = async () => {
               type="button"
               @click="handleStepsFirst"
             >
-              Tiếp tục
+              Đặt sân
             </button>
           </div>
         </form>

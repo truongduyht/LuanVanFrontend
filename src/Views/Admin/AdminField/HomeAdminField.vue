@@ -2,7 +2,7 @@
 import { IconTrash } from "@tabler/icons-vue";
 import { IconEdit } from "@tabler/icons-vue";
 import { IconPencilMinus } from "@tabler/icons-vue";
-
+import * as XLSX from "xlsx";
 import { onMounted, ref, watch } from "vue";
 import { computed } from "vue";
 
@@ -138,6 +138,24 @@ watch(
   },
   { immediate: true }
 );
+const exportToExcel = () => {
+  // Chuyển dữ liệu thành định dạng bảng
+  const dataToExport = listField.value.map((field) => ({
+    "Tên Sân": field.FieldName,
+    "Loại Sân": field.FieldType,
+    "Giá (30p)": field.Price30Minute,
+  }));
+
+  // Tạo WorkSheet từ dữ liệu
+  const worksheet = XLSX.utils.json_to_sheet(dataToExport);
+
+  // Tạo WorkBook
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách sân");
+
+  // Xuất file excel
+  XLSX.writeFile(workbook, "DanhSachSan.xlsx");
+};
 </script>
 
 <template>
@@ -148,6 +166,12 @@ watch(
         class="btn btn-primary border border-primary"
       >
         Thêm Sân
+      </button>
+      <button
+        @click="exportToExcel"
+        class="btn btn-success border border-success"
+      >
+        Xuất Excel
       </button>
     </div>
     <a-table

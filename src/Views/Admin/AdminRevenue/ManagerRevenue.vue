@@ -261,7 +261,10 @@ onMounted(() => {
 
       <!-- Bảng doanh thu theo từng sân -->
       <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
-      <button @click="exportRevenueToExcel" class="btn btn-primary">
+      <button
+        @click="exportRevenueToExcel"
+        class="btn btn-success border border-success"
+      >
         Xuất Excel
       </button>
       <div class="table-container">
@@ -310,7 +313,10 @@ onMounted(() => {
           >
         </h5>
         <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
-        <button @click="exportRevenueDateToExcel" class="btn btn-primary">
+        <button
+          @click="exportRevenueDateToExcel"
+          class="btn btn-success border border-success"
+        >
           Xuất Excel
         </button>
         <div class="table-container">
@@ -361,7 +367,10 @@ onMounted(() => {
           >
         </h5>
         <h5 class="section-subtitle">Doanh thu theo từng sân:</h5>
-        <button @click="exportRevenueMonthToExcel" class="btn btn-primary">
+        <button
+          @click="exportRevenueMonthToExcel"
+          class="btn btn-success border border-success"
+        >
           Xuất Excel
         </button>
         <div class="table-container">

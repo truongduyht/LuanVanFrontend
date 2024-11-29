@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <!-- Cột Liên hệ -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4">
           <h5 class="footer-heading">Liên hệ</h5>
           <p>
             <i class="fas fa-envelope"></i>
@@ -19,7 +19,7 @@
         </div>
 
         <!-- Cột Liên kết -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4">
           <h5 class="footer-heading">Liên kết</h5>
           <a href="/" class="d-block footer-link"
             ><i class="fas fa-home"></i> Trang chủ</a
@@ -30,7 +30,7 @@
         </div>
 
         <!-- Cột Mạng xã hội -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-4">
           <h5 class="footer-heading">Mạng xã hội</h5>
           <a href="#" class="d-block footer-link"
             ><i class="fab fa-facebook-f"></i> Facebook</a
@@ -40,7 +40,7 @@
           >
         </div>
       </div>
-      <p class="mt-4">&copy; 2024 Football. Bảo lưu mọi quyền.</p>
+      <p class="">&copy; 2024 Football. Bảo lưu mọi quyền.</p>
     </div>
     <div class="footer-decorative"></div>
   </footer>

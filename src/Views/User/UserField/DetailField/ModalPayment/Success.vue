@@ -1,6 +1,6 @@
 <template>
   <a-modal :open="true" @cancel="$emit('close')" @ok="$emit('close')" footer="">
-    <a-result status="success" title="Chúc mừng bạn đã đặt tour thành công">
+    <a-result status="success" title="Chúc mừng bạn đã đặt sân thành công">
       <template #extra>
         <a-button type="primary" @click="goToHistory">Lịch Sử Đặt Sân</a-button>
         <a-button @click="goToFieldList">Tiếp Tục Đặt Sân</a-button>

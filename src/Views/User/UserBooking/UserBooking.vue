@@ -9,7 +9,7 @@ import ModalReview from "./ModalReview/ModalReview.vue";
 import ModalCancelBooking from "./UpdateBooking/ModalCancelBooking.vue";
 
 const type = ref("waiting");
-const activeKey = ref("da_dat_san");
+const activeKey = ref("waiting");
 const profile = ref({});
 const BookingAll = ref([]);
 const isShowModalCancel = ref(false);
@@ -207,7 +207,7 @@ const getStatusText = (PaymentStatus) => {
           </template>
 
           <template v-if="column.key === 'action'">
-            <div class="d-flex" v-if="type === 'success' && 'waiting'">
+            <div class="d-flex" v-if="type === 'success' || type === 'waiting'">
               <div class="pointer">
                 <CloseCircleOutlined
                   class="iconCancel"
