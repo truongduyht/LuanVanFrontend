@@ -77,7 +77,7 @@ const columns = [
     key: "DetailBook",
   },
   {
-    title: "Action",
+    title: "Thao tác",
     key: "action",
   },
 ];
